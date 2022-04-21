@@ -4,20 +4,32 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# データ
-x = np.array([1, 2, 4, 6, 7])
-y = np.array([1, 3, 3, 5, 4])
+# CSVを読み込む
+data = np.loadtxt("./housing.csv")
+print(data)
 
-# plt.scatter(x, y)   # 散布図を描画
-# plt.show()
+x = data[:, 9]
+y = data[:, 13]
+
+# x = np.reshape(506, 1)
+
+#print(x)
+#print(y)
+
+plt.scatter(x, y)   # 散布図を描画
+plt.show()
 
 def reg1dim(x, y):
-    a = np.dot(x, y) / (x ** 2).sum()
+    n = len(x)
+    a = ((np.dot(x, y) - y.sum() * x.sum() / n) /
+        ((x ** 2).sum() - x.sum() ** 2 / n))
 
-    return a
+    b = (y.sum() - a * x.sum()) / n
 
-a = reg1dim(x, y)
+    return a, b
+
+a, b = reg1dim(x, y)
 
 plt.scatter(x, y, color = "k")
-plt.plot([0, x.max()], [0, a * x.max()])
+plt.plot([0, x.max()], [b, a * x.max() + b])
 plt.show()
