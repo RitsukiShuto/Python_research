@@ -27,23 +27,25 @@ class CustomVariationalLayer(Layer):
     self.is_placeholder = True
     super(CustomVariationalLayer, self).__init__(**kwargs)
     def vae_loss(self, x, x_decoded_mean, z_log_var, z_mean): # オリジナルの損失関数
-    # 入力と出力の交差エントロピー
-    # 精度
-    beta = 1000
-    xent_loss = beta * original_dim * metrics.mse(x,x_decoded_mean)
-    # xent_loss = original_dim * metrics.binary_crossentropy(x,x_decoded_mean)
-    # 事前分布と事後分布のKL情報量
-    kl_loss = - 0.5 * backend.sum(1 + z_log_var -backend.square(z_mean) - backend.exp(z_log_var), axis=-1)
- return backend.mean(xent_loss + kl_loss)
+      # 入力と出力の交差エントロピー
+      # 精度
+      beta = 1000
+      xent_loss = beta * original_dim * metrics.mse(x,x_decoded_mean)
+      # xent_loss = original_dim * metrics.binary_crossentropy(x,x_decoded_mean)
+      # 事前分布と事後分布のKL情報量
+      kl_loss = - 0.5 * backend.sum(1 + z_log_var -backend.square(z_mean) - backend.exp(z_log_var), axis=-1)
+
+      return backend.mean(xent_loss + kl_loss)
 
  def call(self, inputs):
-    x = inputs[0]
-    x_decoded_mean = inputs[1]
-    z_log_var = inputs[2]
-    z_mean = inputs[3]
-    loss = self.vae_loss(x, x_decoded_mean, z_log_var, z_mean)
-    self.add_loss(loss, inputs=inputs) # オリジナルの損失関数を付加
- return x
+   x = inputs[0]
+   x_decoded_mean = inputs[1]
+   z_log_var = inputs[2]
+   z_mean = inputs[3]
+   loss = self.vae_loss(x, x_decoded_mean, z_log_var, z_mean)
+   self.add_loss(loss, inputs=inputs) # オリジナルの損失関数を付加
+
+   return x
  
 # この自作レイヤーの出力を一応定義しておきますが、今回この出力は全く使いません
 # main文
@@ -133,18 +135,14 @@ encoder2 = Model(x2, z2_mean) # エンコーダのみ分離
 
 # デコーダ
 decoder_input1 = Input(shape=(latent_dim,))
-decoder_h11 = Dense(intermediate_dim,
-activation='softplus')(decoder_input1)
-decoder_h12 = Dense(intermediate_dim,
-activation='softplus')(decoder_h11)
+decoder_h11 = Dense(intermediate_dim, activation='softplus')(decoder_input1)
+decoder_h12 = Dense(intermediate_dim, activation='softplus')(decoder_h11)
 decoder_mean1 = Dense(original_dim, activation=None)(decoder_h12)
 decoder1 = Model(decoder_input1, decoder_mean1) # デコーダのみ分離
 x_decoded_mean1 = decoder1(z1)
 decoder_input2 = Input(shape=(latent_dim,))
-decoder_h21 = Dense(intermediate_dim,
-activation='softplus')(decoder_input2)
-decoder_h22 = Dense(intermediate_dim,
-activation='softplus')(decoder_h21)
+decoder_h21 = Dense(intermediate_dim, activation='softplus')(decoder_input2)
+decoder_h22 = Dense(intermediate_dim, activation='softplus')(decoder_h21)
 decoder_mean2 = Dense(original_dim, activation=None)(decoder_h22)
 decoder2 = Model(decoder_input2, decoder_mean2) # デコーダのみ分離
 x_decoded_mean2 = decoder2(z2)
@@ -153,8 +151,7 @@ x_decoded_mean2 = decoder2(z2)
 y1 = CustomVariationalLayer()([x1, x_decoded_mean1, z1_log_var,z1_mean])
 y2 = CustomVariationalLayer()([x2, x_decoded_mean2, z2_log_var,z2_mean])
 vae = Model([x1, x2], [y1, y2])
-vae.compile(optimizer=optimizers.Adam(lr=0.001, beta_1=0.9,
-beta_2=0.999, epsilon=1e-08), loss=[None, None])
+vae.compile(optimizer=optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08), loss=[None, None])
 # vae.compile(optimizer='rmsprop', loss=None)
 vae.summary()
 
@@ -166,8 +163,7 @@ add_no = 200
 # 学習
 print(X1.shape)
 print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size,
-initial_epoch=0, epochs=500)
+vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=500)
 
 # 仮ラベル
 encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
@@ -273,8 +269,7 @@ X1_un = np.delete(X1_un, X1_min_No[0:add_no], 0)
 X2_un = np.delete(X2_un, X2_min_No[0:add_no], 0)
 print(X1.shape)
 print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size,
-initial_epoch=2000, epochs=2500)
+vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=2000, epochs=2500)
 
 
 #============================================================
@@ -288,6 +283,7 @@ from sklearn.metrics import mean_squared_error
 # np.set_printoptions(suppress=True)
 # print('{:.30f}'.format(mse1))
 # print('{:.30f}'.format(mse2))
+
 # 新規データの予測
 encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
 x1_train_encoded = encoder1.predict(X1_set, batch_size=batch_size)
