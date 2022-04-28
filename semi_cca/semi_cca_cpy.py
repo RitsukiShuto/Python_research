@@ -169,122 +169,38 @@ vae.summary()
 # モデルを訓練します
 add_no = 200
 
-# 学習
-print(X1.shape)
-print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=500)
+for epochs in range(500, 2500, 500):
+    # 学習
+    print("X1.shape = ", X1.shape)
+    print("X2.shape = ", X2.shape)
+    vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=epochs)
 
-# 仮ラベル
-encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
-x1_train_encoded = encoder1.predict(X1_un, batch_size=batch_size)
-encoder2 = Model(x2, z2_mean) # エンコーダのみ分離
-x2_train_encoded = encoder2.predict(X2_un, batch_size=batch_size)
-x1_decode = decoder1.predict(x2_train_encoded)
-x2_decode = decoder1.predict(x1_train_encoded)
+    # 仮ラベル
+    encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
+    x1_train_encoded = encoder1.predict(X1_un, batch_size=batch_size)
+    encoder2 = Model(x2, z2_mean) # エンコーダのみ分離
+    x2_train_encoded = encoder2.predict(X2_un, batch_size=batch_size)
+    x1_decode = decoder1.predict(x2_train_encoded)
+    x2_decode = decoder1.predict(x1_train_encoded)
 
-# 増やす
-squared_error = (X1_un-x1_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X1_min_No = np.argsort(sum_squared_error)[::-1]
-squared_error = (X2_un-x2_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X2_min_No = np.argsort(sum_squared_error)[::-1]
-X1 = np.concatenate([X1, X1_un[X1_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, x2_decode[X1_min_No[0:add_no]]], 0)
-X1 = np.concatenate([X1, x1_decode[X2_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, X2_un[X2_min_No[0:add_no]]], 0)
-X1_un = np.delete(X1_un, X1_min_No[0:add_no], 0)
-X2_un = np.delete(X2_un, X2_min_No[0:add_no], 0)
-
-
-# 学習
-print(X1.shape)
-print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=500, epochs=1000)
-# 仮ラベル
-encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
-x1_train_encoded = encoder1.predict(X1_un, batch_size=batch_size)
-encoder2 = Model(x2, z2_mean) # エンコーダのみ分離
-x2_train_encoded = encoder2.predict(X2_un, batch_size=batch_size)
-x1_decode = decoder1.predict(x2_train_encoded)
-x2_decode = decoder1.predict(x1_train_encoded)
-
-# 増やす
-squared_error = (X1_un-x1_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X1_min_No = np.argsort(sum_squared_error)[::-1]
-squared_error = (X2_un-x2_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X2_min_No = np.argsort(sum_squared_error)[::-1]
-X1 = np.concatenate([X1, X1_un[X1_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, x2_decode[X1_min_No[0:add_no]]], 0)
-X1 = np.concatenate([X1, x1_decode[X2_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, X2_un[X2_min_No[0:add_no]]], 0)
-X1_un = np.delete(X1_un, X1_min_No[0:add_no], 0)
-X2_un = np.delete(X2_un, X2_min_No[0:add_no], 0)
-
-# 学習
-print(X1.shape)
-print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=1000, epochs=1500)
-# 仮ラベル
-encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
-x1_train_encoded = encoder1.predict(X1_un, batch_size=batch_size)
-encoder2 = Model(x2, z2_mean) # エンコーダのみ分離
-x2_train_encoded = encoder2.predict(X2_un, batch_size=batch_size)
-x1_decode = decoder1.predict(x2_train_encoded)
-x2_decode = decoder1.predict(x1_train_encoded)
-
-# 増やす
-squared_error = (X1_un-x1_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X1_min_No = np.argsort(sum_squared_error)[::-1]
-squared_error = (X2_un-x2_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X2_min_No = np.argsort(sum_squared_error)[::-1]
-X1 = np.concatenate([X1, X1_un[X1_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, x2_decode[X1_min_No[0:add_no]]], 0)
-X1 = np.concatenate([X1, x1_decode[X2_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, X2_un[X2_min_No[0:add_no]]], 0)
-X1_un = np.delete(X1_un, X1_min_No[0:add_no], 0)
-X2_un = np.delete(X2_un, X2_min_No[0:add_no], 0)
-
-# 学習
-print(X1.shape)
-print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=1500, epochs=2000)
-# 仮ラベル
-encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
-x1_train_encoded = encoder1.predict(X1_un, batch_size=batch_size)
-encoder2 = Model(x2, z2_mean) # エンコーダのみ分離
-x2_train_encoded = encoder2.predict(X2_un, batch_size=batch_size)
-x1_decode = decoder1.predict(x2_train_encoded)
-x2_decode = decoder1.predict(x1_train_encoded)
-
-# 増やす
-squared_error = (X1_un-x1_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X1_min_No = np.argsort(sum_squared_error)[::-1]
-squared_error = (X2_un-x2_decode)**2
-sum_squared_error = np.sum(squared_error, axis=1)
-X2_min_No = np.argsort(sum_squared_error)[::-1]
-X1 = np.concatenate([X1, X1_un[X1_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, x2_decode[X1_min_No[0:add_no]]], 0)
-X1 = np.concatenate([X1, x1_decode[X2_min_No[0:add_no]]], 0)
-X2 = np.concatenate([X2, X2_un[X2_min_No[0:add_no]]], 0)
-X1_un = np.delete(X1_un, X1_min_No[0:add_no], 0)
-X2_un = np.delete(X2_un, X2_min_No[0:add_no], 0)
-
-print(X1.shape)
-print(X2.shape)
-vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=2000, epochs=2500)
-
-
+    # 増やす
+    squared_error = (X1_un-x1_decode)**2
+    sum_squared_error = np.sum(squared_error, axis=1)
+    X1_min_No = np.argsort(sum_squared_error)[::-1]
+    squared_error = (X2_un-x2_decode)**2
+    sum_squared_error = np.sum(squared_error, axis=1)
+    X2_min_No = np.argsort(sum_squared_error)[::-1]
+    X1 = np.concatenate([X1, X1_un[X1_min_No[0:add_no]]], 0)
+    X2 = np.concatenate([X2, x2_decode[X1_min_No[0:add_no]]], 0)
+    X1 = np.concatenate([X1, x1_decode[X2_min_No[0:add_no]]], 0)
+    X2 = np.concatenate([X2, X2_un[X2_min_No[0:add_no]]], 0)
+    X1_un = np.delete(X1_un, X1_min_No[0:add_no], 0)
+    X2_un = np.delete(X2_un, X2_min_No[0:add_no], 0)
 
 #============================================================
 # 結果を表示します
-print(X1.shape)
-print(X2.shape)
+print("result: X1.shape = ", X1.shape)
+print("result: X2.shape = ", X2.shape)
 
 
 predict = vae.predict([X1_set, X2_set])
