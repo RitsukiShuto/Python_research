@@ -1,3 +1,4 @@
+from tabnanny import verbose
 import numpy as np
 from scipy.stats import norm
 import tensorflow as tf
@@ -173,7 +174,7 @@ for epochs in range(500, 2500, 500):
     # 学習
     print("X1.shape = ", X1.shape)
     print("X2.shape = ", X2.shape)
-    vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=epochs)
+    vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=epochs, verbose = 0)
 
     # 仮ラベル
     encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
