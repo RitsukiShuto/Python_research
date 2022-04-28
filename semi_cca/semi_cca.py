@@ -33,7 +33,6 @@ class CustomVariationalLayer(Layer):
         super(CustomVariationalLayer, self).__init__(**kwargs)
 
     def vae_loss(self, x, x_decoded_mean, z_log_var, z_mean): # オリジナルの損失関数
-<<<<<<< HEAD:multmodal.py
       # 入力と出力の交差エントロピー
       # 精度
       beta = 1000
@@ -44,27 +43,15 @@ class CustomVariationalLayer(Layer):
 
       return backend.mean(xent_loss + kl_loss)
 
- def call(self, inputs):
-    x = inputs[0]
-    x_decoded_mean = inputs[1]
-    z_log_var = inputs[2]
-    z_mean = inputs[3]
-    loss = self.vae_loss(x, x_decoded_mean, z_log_var, z_mean)
-    self.add_loss(loss, inputs=inputs) # オリジナルの損失関数を付加
-    
-    return x
- 
-# この自作レイヤーの出力を一応定義しておきますが、今回この出力は全く使いません
-=======
-        # 入力と出力の交差エントロピー
-        # 精度
-        beta = 1000
-        xent_loss = beta * original_dim * metrics.mse(x, x_decoded_mean)
-        # xent_loss = original_dim * metrics.binary_crossentropy(x, x_decoded_mean)
-
-        # 事前分布と事後分布のKL情報量
-        kl_loss = - 0.5 * backend.sum(1 + z_log_var - backend.square(z_mean) - backend.exp(z_log_var), axis=-1)
-        return backend.mean(xent_loss + kl_loss)
+    def call(self, inputs):
+        x = inputs[0]
+        x_decoded_mean = inputs[1]
+        z_log_var = inputs[2]
+        z_mean = inputs[3]
+        loss = self.vae_loss(x, x_decoded_mean, z_log_var, z_mean)
+        self.add_loss(loss, inputs=inputs) # オリジナルの損失関数を付加
+        
+        return x
 
     def call(self, inputs):
         x = inputs[0]
@@ -75,8 +62,6 @@ class CustomVariationalLayer(Layer):
         self.add_loss(loss, inputs=inputs) # オリジナルの損失関数を付加
         return x # この自作レイヤーの出力を一応定義しておきますが、今回この出力は全く使いません
 
-
->>>>>>> dev:semi_cca/semi_cca.py
 # main文
 # データ読み込み
 N = 200
