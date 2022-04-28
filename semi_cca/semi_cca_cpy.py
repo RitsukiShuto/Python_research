@@ -53,16 +53,15 @@ class CustomVariationalLayer(Layer):
         return x # この自作レイヤーの出力を一応定義しておきますが、今回この出力は全く使いません
 
 
-# main文
-# データ読み込み
-N = 200
-D1 = 2
+# データ生成
+D1 = 2      
 D2 = 2
 
 val1 = 0.2
 val2 = 0.2
 
-Z = np.linspace(-1,1,N)
+N = 200     # セットになったモダリティデータ
+Z = np.linspace(-1,1,N)     # 共通因子の生成
 Z_theta = math.pi * Z**2
 
 # 教師あり
@@ -72,6 +71,7 @@ X1[:,0] = Z
 X1[:,1] = np.sin(Z_theta)
 X1[:, 0] += np.random.normal(0, val1, N)
 X1[:, 1] += np.random.normal(0, val1, N)
+#print(X1)      # DEBUG
 
 # ビュー2
 X2 = np.zeros([N, D2])
@@ -79,9 +79,10 @@ X2[:,0] = Z
 X2[:,1] = np.cos(Z_theta)
 X2[:, 0] += np.random.normal(0, val2, N)
 X2[:, 1] += np.random.normal(0, val2, N)
+#print(X2)      # DEBUG
 
 # 教師なし
-NN = 2000
+NN = 2000       # セットになっていないモダリティデータ
 ZZ = np.linspace(-1,1,NN)
 ZZ_theta = math.pi * ZZ**2
 # ビュー1
@@ -98,7 +99,7 @@ X2_un[:,1] = np.cos(ZZ_theta)
 X2_un[:, 0] += np.random.normal(0, val2, NN)
 X2_un[:, 1] += np.random.normal(0, val2, NN)
 
-# 検証用
+# テストデータ
 # ビュー1
 X1_set = np.zeros([N, D1])
 X1_set[:,0] = Z
@@ -172,9 +173,10 @@ add_no = 200
 
 for epochs in range(500, 2500, 500):
     # 学習
+    print("train in progress:", epochs, "/2500")
     print("X1.shape = ", X1.shape)
     print("X2.shape = ", X2.shape)
-    vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=epochs, verbose = 0)
+    vae.fit(x=[X1, X2], y=None, shuffle=True, batch_size=batch_size, initial_epoch=0, epochs=epochs, verbose = 0)   # verbose: progressbar
 
     # 仮ラベル
     encoder1 = Model(x1, z1_mean) # エンコーダのみ分離
