@@ -166,7 +166,6 @@ vae.compile(optimizer=optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilo
 vae.summary()
 
 
-
 #============================================================
 # モデルを訓練します
 add_no = 200
