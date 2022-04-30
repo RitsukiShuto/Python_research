@@ -35,6 +35,6 @@ z_mesh = (model.w_[0] + model.w_[1] * x_mesh.ravel() +
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d',)
 ax.scatter(X[:, 0], X[:, 1], y, color="k")
-ax.plot_writeframe(x_mesh, y_mesh, z_mesh, color="r")
+ax.plot_wireframe(x_mesh, y_mesh, z_mesh, color="r")
 
 plt.show()
