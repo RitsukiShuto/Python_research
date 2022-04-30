@@ -24,13 +24,13 @@ model = linearreg.LinearRegression()
 model.fit(X, y)
 
 print("係数", model.w_)
-print("(1, 1)に対する予測値:", model.predict(np.array[1, 1]))
+print("(1, 1)に対する予測値:", model.predict(np.array([1, 1])))
 
 x_mesh, y_mesh = np.meshgrid(np.linspace(0, scale, 20),
                              np.linspace(0, scale, 20))
 
 z_mesh = (model.w_[0] + model.w_[1] * x_mesh.ravel() +
-          model.w_[2] * y_mesh.ravel()).reshape(x_mesh, y_mesh)
+          model.w_[2] * y_mesh.ravel()).reshape(x_mesh.shape)
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d',)
