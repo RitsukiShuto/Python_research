@@ -54,7 +54,7 @@ class CustomVariationalLayer(Layer):
 
 
 # データ生成
-D1 = 2      
+D1 = 2
 D2 = 2
 
 val1 = 0.2
@@ -81,10 +81,11 @@ X2[:, 0] += np.random.normal(0, val2, N)
 X2[:, 1] += np.random.normal(0, val2, N)
 #print(X2)      # DEBUG
 
-# 教師なし
+# 教師なしデータ
 NN = 2000       # セットになっていないモダリティデータ
 ZZ = np.linspace(-1,1,NN)
 ZZ_theta = math.pi * ZZ**2
+
 # ビュー1
 X1_un = np.zeros([NN, D1])
 X1_un[:,0] = ZZ
