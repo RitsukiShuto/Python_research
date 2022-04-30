@@ -12,7 +12,7 @@ n = 100
 scale = 10
 
 np.random.seed(0)
-x = np.random.random((n, 2)) * scale
+X = np.random.random((n, 2)) * scale
 
 w0 = 1
 w1 = 2
