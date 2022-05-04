@@ -5,16 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # CSVを読み込む
-data = np.loadtxt("./housing.csv")
+data = np.loadtxt("../data/housing.csv")
 print(data)
 
 x = data[:, 9]
 y = data[:, 13]
-
-# x = np.reshape(506, 1)
-
-#print(x)
-#print(y)
 
 plt.scatter(x, y)   # 散布図を描画
 plt.show()
