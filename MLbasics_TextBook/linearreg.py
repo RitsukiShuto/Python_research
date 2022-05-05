@@ -4,7 +4,6 @@
 #
 import numpy as np
 from scipy import linalg
-
 class LinearRegression:
     def __init__(self):
         self.w_ = None
@@ -22,4 +21,3 @@ class LinearRegression:
         Xtil = np.c_[np.ones(X.shape[0]), X]
 
         return np.dot(Xtil, self.w_)
-    
