@@ -12,7 +12,6 @@ from keras import backend, metrics, optimizers
 # 描画
 import matplotlib.pyplot as plt
 
-
 # 2次元正規分布から1点サンプリングする補助関数です
 def sampling(args):
     from keras import backend
