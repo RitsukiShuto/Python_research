@@ -8,24 +8,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
+# 乱数生成
 n = 100
 scale = 10
 
 np.random.seed(0)
-X = np.random.random((n, 2)) * scale
+X = np.random.random((n, 2)) * scale    # 100*2の行列を生成
 
 w0 = 1
 w1 = 2
 w2 = 3
 
-y = w0 + w1 * X[:, 0] + w2 * X[:, 1] + np.random.random(n)
+y = w0 + w1 * X[:, 0] + w2 * X[:, 1] + np.random.random(n)  # 線形和に乱数を足したもの
 
+# 予測
 model = linearreg.LinearRegression()
 model.fit(X, y)
 
-print("係数", model.w_)
-print("(1, 1)に対する予測値:", model.predict(np.array([1, 1])))
+print("係数", model.w_)     # model.w_: 計算された係数
+print("(1, 1)に対する予測値:", model.predict(np.array([1, 1])))     # (1, 1)に対応する予測値
 
+# 結果を表示
 x_mesh, y_mesh = np.meshgrid(np.linspace(0, scale, 20),
                              np.linspace(0, scale, 20))
 

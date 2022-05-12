@@ -4,17 +4,18 @@
 #
 import numpy as np
 from scipy import linalg
-
 class LinearRegression:
     def __init__(self):
         self.w_ = None
 
+    # 学習
     def fit(self, X, t):
         Xtil = np.c_[np.ones(X.shape[0]), X]
         A = np.dot(Xtil.T, Xtil)
         b = np.dot(Xtil.T, t)
         self.w_ = linalg.solve(A, b)
 
+    # 予測
     def predict(self, X):
         if X.ndim == 1:
             X = X.reshape(1, -1)
@@ -22,4 +23,3 @@ class LinearRegression:
         Xtil = np.c_[np.ones(X.shape[0]), X]
 
         return np.dot(Xtil, self.w_)
-    
