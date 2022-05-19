@@ -1,4 +1,4 @@
-# Pythonの勉強
+# Pythonの勉強と研究のリポジトリ
 Created by RitsukiShuto on 2022/04/21.\
 参考: 機械学習のエッセンス
 # トピックス
