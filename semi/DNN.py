@@ -45,7 +45,7 @@ plt.scatter(X2[:, 0], X2[:, 1], marker='o', c = 'blue', s=20)
 plt.scatter(X3[:, 0], X3[:, 1], marker='o', c = 'green', s=20)
 # plt.show()
 
-# 
+# DNNを生成
 Y_categorical = keras.utils.to_categorical(Y-1, 3)
 print(Y_categorical[0])
 
@@ -57,11 +57,12 @@ model.add(Dense(3, activation = 'softmax'))
 
 model.compile(loss = 'categorical_crossentropy', optimizer = 'sgd', metrics = ['accuracy'])
 
+# パラメータを設定
 epochs = 50
 batch_size = 60
 model.fit(X, Y_categorical, batch_size = batch_size, epochs = epochs)
 
-#
+# 予測
 student_No = [15, 112, 249]
 
 print("各学生の点数:"+ str(X[student_No]))
