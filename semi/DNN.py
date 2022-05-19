@@ -1,3 +1,6 @@
+# Created by RitsukiShuto on 2022/05/19.
+# DNN.py
+#
 import numpy as np
 
 N1 = 100
