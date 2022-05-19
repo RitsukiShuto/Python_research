@@ -1,8 +1,14 @@
 # Created by RitsukiShuto on 2022/05/19.
 # DNN.py
 #
+# import lib
 import numpy as np
 import matplotlib.pyplot as plt
+
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, InputLayer
+from tensorflow.keras.optimizers import RMSprop
 
 # 人工データを作成
 N1 = 100
@@ -37,7 +43,31 @@ fig = plt.figure(figsize = (8, 8))
 plt.scatter(X1[:, 0], X1[:, 1], marker='o', c = 'red', s=20)
 plt.scatter(X2[:, 0], X2[:, 1], marker='o', c = 'blue', s=20)
 plt.scatter(X3[:, 0], X3[:, 1], marker='o', c = 'green', s=20)
-
 # plt.show()
 
 # 
+Y_categorical = keras.utils.to_categorical(Y-1, 3)
+print(Y_categorical[0])
+
+model = Sequential()
+model.add(InputLayer(input_shape = (2, )))
+model.add(Dense(100, activation = 'relu'))
+model.add(Dense(50, activation = 'relu'))
+model.add(Dense(3, activation = 'softmax'))
+
+model.compile(loss = 'categorical_crossentropy', optimizer = 'sgd', metrics = ['accuracy'])
+
+epochs = 50
+batch_size = 60
+model.fit(X, Y_categorical, batch_size = batch_size, epochs = epochs)
+
+#
+student_No = [15, 112, 249]
+
+print("各学生の点数:"+ str(X[student_No]))
+print("各学生の学校種類:"+ str(Y[student_No]))
+
+np.set_printoptions(suppress=True)
+
+print("予測結果:")
+print(model.predict(X[student_No]))
