@@ -43,7 +43,7 @@ fig = plt.figure(figsize = (8, 8))
 plt.scatter(X1[:, 0], X1[:, 1], marker='o', c = 'red', s=20)
 plt.scatter(X2[:, 0], X2[:, 1], marker='o', c = 'blue', s=20)
 plt.scatter(X3[:, 0], X3[:, 1], marker='o', c = 'green', s=20)
-# plt.show()
+plt.show()
 
 # DNNを生成
 Y_categorical = keras.utils.to_categorical(Y-1, 3)
