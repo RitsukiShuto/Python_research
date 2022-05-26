@@ -1,4 +1,4 @@
 import numpy as np
 
-X = np.array(5)
+X = np.random.rand(5)
 print(X)
